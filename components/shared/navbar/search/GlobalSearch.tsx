@@ -18,7 +18,7 @@ const GlobalSearch = () => {
         <Input
           type="text"
           placeholder="search globally"
-          value=""
+          readOnly
           className="paragraph-regular no-focus background-light800_darkgradient placeholder border-none outline-none"
         />
       </div>
