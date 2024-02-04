@@ -5,35 +5,37 @@ import Link from "next/link";
 import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/shared/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
+import QuestionCArd from "@/components/cards/QuestionCard";
 
 const questions = [
-  // {
-  //   _id: 1,
-  //   title: "question1",
-  //   tags: [
-  //     { _id: 1, name: "tag1" },
-  //     { _id: 2, name: "tag2" },
-  //   ],
-  //   author: "author one",
-  //   upvotes: 12,
-  //   views: 75,
-  //   answers: 3,
-  //   createdAt: "2021-09-01T12:00:00:000Z",
-  // },
-  // {
-  //   _id: 2,
-  //   title: "question2",
-  //   tags: [
-  //     { _id: 1, name: "tag1" },
-  //     { _id: 2, name: "tag2" },
-  //   ],
-  //   author: "author two",
-  //   upvotes: 13,
-  //   views: 60,
-  //   answers: 2,
-  //   createdAt: "2021-10-01T12:00:00:000Z",
-  // },
+  {
+    _id: "1",
+    title: "question1",
+    tags: [
+      { _id: "1", name: "tag1" },
+      { _id: "2", name: "tag2" },
+    ],
+    author: { _id: "1", name: "author one", picture: "picture1" },
+    upvotes: 121083,
+    views: 75382,
+    answers: [],
+    createdAt: new Date("2023-09-01T12:00:00.000Z"),
+  },
+  {
+    _id: "2",
+    title: "question2",
+    tags: [
+      { _id: "1", name: "tag1" },
+      { _id: "2", name: "tag2" },
+    ],
+    author: { _id: "2", name: "author two", picture: "picture2" },
+    upvotes: 1300,
+    views: 60238,
+    answers: [],
+    createdAt: new Date("2022-10-01T12:00:00.000Z"),
+  },
 ];
+
 export default function Home() {
   return (
     <>
@@ -66,7 +68,19 @@ export default function Home() {
       <div className="mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (
           questions.map((question) => {
-            return "QuestionCArd";
+            return (
+              <QuestionCArd
+                key={question._id}
+                _id={question._id}
+                title={question.title}
+                tags={question.tags}
+                author={question.author}
+                views={question.views}
+                upvotes={question.upvotes}
+                answers={question.answers}
+                createdAt={question.createdAt}
+              />
+            );
           })
         ) : (
           <NoResult
