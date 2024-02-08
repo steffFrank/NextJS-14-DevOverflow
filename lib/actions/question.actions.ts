@@ -2,7 +2,7 @@
 
 import { connectToDatabase } from "../mongoose";
 
-export const createQuestion = async (params) => {
+export const createQuestion = async (params: any) => {
   try {
     connectToDatabase();
   } catch (error) {}
