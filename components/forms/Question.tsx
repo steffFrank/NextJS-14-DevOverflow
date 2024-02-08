@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,9 +22,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.actions";
+
+const type: any = "create";
 
 const Question = () => {
   const editorRef = useRef(null);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
@@ -35,8 +40,15 @@ const Question = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof questionSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof questionSchema>) {
+    setIsSubmitting(true);
+
+    try {
+      await createQuestion({});
+    } catch (error) {
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const handlerTagRemove = (tag: string, field: any) => {
@@ -69,7 +81,7 @@ const Question = () => {
         form.clearErrors("tags");
       }
 
-      if (field.value.length == 3) {
+      if (field.value.length === 3) {
         tagInput.value = "";
         form.setValue("tags", [...field.value]);
         return form.setError("tags", {
@@ -125,6 +137,8 @@ const Question = () => {
                       // @ts-ignore
                       (editorRef.current = editor)
                     }
+                    onBlur={field.onBlur}
+                    onEditorChange={(content) => field.onChange(content)}
                     initialValue=""
                     init={{
                       height: 350,
@@ -145,12 +159,13 @@ const Question = () => {
                         "insertdatetime",
                         "media",
                         "table",
+                        "wordcount",
                       ],
                       toolbar:
                         "undo redo | blocks | " +
                         "codesample bold italic forecolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat | help",
+                        "removeformat | help | wordcount",
                       content_style:
                         "body { font-family:Inter,Arial; font-size:16px }",
                     }}
@@ -209,7 +224,17 @@ const Question = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          className="primary-gradient w-fit !text-light-900"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>{type === "edit" ? "Editing..." : "Posting..."}</>
+          ) : (
+            <>{type === "edit" ? "Edit Question" : "Ask a Question"}</>
+          )}
+        </Button>
       </form>
     </Form>
   );
