@@ -55,6 +55,7 @@ const Question = ({ mongoUserId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       });
 
       router.push("/");
@@ -79,27 +80,34 @@ const Question = ({ mongoUserId }: Props) => {
       const tagInput = e.target as HTMLInputElement;
       const tagValue = tagInput.value.trim();
 
-      if (tagValue !== "") {
-        if (tagValue.length > 15) {
-          return form.setError("tags", {
-            type: "required",
-            message: "Tag must be less than 15 characters.",
-          });
-        }
+      if (tagValue === "" || tagValue.length > 15) {
+        form.setError("tags", {
+          type: "validation",
+          message:
+            tagValue === ""
+              ? "Tag cannot be empty."
+              : "Tag must be less than 15 characters.",
+        });
+        return;
       }
 
-      if (!field.value.includes(tagValue as never)) {
+      if (field.value.length >= 3) {
+        tagInput.value = "";
+        form.setError("tags", {
+          type: "max",
+          message: "No more than 3 tags allowed.",
+        });
+        return;
+      }
+
+      if (!field.value.includes(tagValue)) {
         form.setValue("tags", [...field.value, tagValue]);
         tagInput.value = "";
         form.clearErrors("tags");
-      }
-
-      if (field.value.length === 3) {
-        tagInput.value = "";
-        form.setValue("tags", [...field.value]);
-        return form.setError("tags", {
-          type: "required",
-          message: "No more than 3 tags",
+      } else {
+        form.setError("tags", {
+          type: "duplicate",
+          message: "Duplicate tags are not allowed.",
         });
       }
     }

@@ -21,7 +21,7 @@ interface QuestionProps {
   answers: Array<object>;
   createdAt: Date;
 }
-const QuestionCArd = ({
+const QuestionCard = ({
   _id,
   title,
   tags,
@@ -68,7 +68,7 @@ const QuestionCArd = ({
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
           value={`${formatBigNumber(upvotes)}`}
-          title=" Votes"
+          title={`${upvotes > 0 ? " Votes" : " Vote"}`}
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
@@ -82,7 +82,7 @@ const QuestionCArd = ({
           imgUrl="/assets/icons/eye.svg"
           alt="Eye"
           value={`${formatBigNumber(views)}`}
-          title={`${views > 0 ? " Views" : "View"}`}
+          title={`${views > 0 ? " Views" : " View"}`}
           textStyles="small-medium text-dark400_light800"
         />
       </div>
@@ -90,4 +90,4 @@ const QuestionCArd = ({
   );
 };
 
-export default QuestionCArd;
+export default QuestionCard;

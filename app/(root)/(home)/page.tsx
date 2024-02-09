@@ -5,38 +5,12 @@ import Link from "next/link";
 import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/shared/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
-import QuestionCArd from "@/components/cards/QuestionCard";
+import QuestionCard from "@/components/cards/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.actions";
 
-const questions = [
-  {
-    _id: "1",
-    title: "question1",
-    tags: [
-      { _id: "1", name: "tag1" },
-      { _id: "2", name: "tag2" },
-    ],
-    author: { _id: "1", name: "author one", picture: "picture1" },
-    upvotes: 121083,
-    views: 75382,
-    answers: [],
-    createdAt: new Date("2023-09-01T12:00:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "question2",
-    tags: [
-      { _id: "1", name: "tag1" },
-      { _id: "2", name: "tag2" },
-    ],
-    author: { _id: "2", name: "author two", picture: "picture2" },
-    upvotes: 1300,
-    views: 60238,
-    answers: [],
-    createdAt: new Date("2022-10-01T12:00:00.000Z"),
-  },
-];
+export default async function Home() {
+  const result = await getQuestions({});
 
-export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -66,10 +40,10 @@ export default function Home() {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => {
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => {
             return (
-              <QuestionCArd
+              <QuestionCard
                 key={question._id}
                 _id={question._id}
                 title={question.title}
