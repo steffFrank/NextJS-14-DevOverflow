@@ -8,7 +8,7 @@ export default authMiddleware({
     "/profile",
     "/profile/:id",
     "/question/:id",
-    "tags/:id",
+    "/tags/:id",
     "/community",
     "/jobs",
     "/collection",
