@@ -14,7 +14,7 @@ export default authMiddleware({
     "/collection",
     "/ask-question",
   ],
-  ignoredRoutes: ["/ask-question"],
+  ignoredRoutes: [],
 });
 
 export const config = {
