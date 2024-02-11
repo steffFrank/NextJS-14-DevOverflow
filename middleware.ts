@@ -12,6 +12,7 @@ export default authMiddleware({
     "/community",
     "/jobs",
     "/collection",
+    "/ask-question",
   ],
   ignoredRoutes: ["/api/webhooks", "/ask-question"],
 });
