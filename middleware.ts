@@ -13,7 +13,7 @@ export default authMiddleware({
     "/jobs",
     "/collection",
   ],
-  ignoredRoutes: ["/api/webhooks"],
+  ignoredRoutes: ["/api/webhooks", "/ask-question"],
 });
 
 export const config = {
