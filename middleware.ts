@@ -5,11 +5,13 @@ export default authMiddleware({
     "/",
     "/api/webhooks",
     "/tags",
+    "/profile",
     "/profile/:id",
     "/question/:id",
     "tags/:id",
     "/community",
     "/jobs",
+    "/collection",
   ],
   ignoredRoutes: ["/api/webhooks"],
 });
