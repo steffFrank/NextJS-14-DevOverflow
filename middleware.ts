@@ -5,14 +5,20 @@ export default authMiddleware({
     "/",
     "/api/webhooks(.*)",
     "/tags",
+    "/profile",
     "/profile/:id",
     "/question/:id",
     "tags/:id",
     "/community",
     "/jobs",
-    "/collections",
   ],
-  ignoredRoutes: ["/api/webhooks(.*)"],
+  ignoredRoutes: [
+    "/api/webhooks(.*)",
+    "/ask-question",
+    "/collection",
+    "/ask-questions",
+    "questions/:id",
+  ],
 });
 
 export const config = {
