@@ -10,6 +10,7 @@ export default authMiddleware({
     "tags/:id",
     "/community",
     "/jobs",
+    "/collections",
   ],
   ignoredRoutes: ["/api/webhooks(.*)"],
 });
