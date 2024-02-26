@@ -2,7 +2,7 @@
 
 import Answer from "@/database/answer.model";
 import { connectToDatabase } from "../mongoose";
-import { CreateAnswerParams } from "./shared.types";
+import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
@@ -22,6 +22,24 @@ export const createAnswer = async (params: CreateAnswerParams) => {
     });
 
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getAllAnswers = async (params: GetAnswersParams) => {
+  try {
+    await connectToDatabase();
+
+    const { questionId } = params;
+    const answers = await Answer.find({ question: questionId })
+      .populate({
+        path: "author",
+        model: "User",
+      })
+      .sort({ createdAt: -1 });
+    return { answers };
   } catch (error) {
     console.log(error);
     throw error;
