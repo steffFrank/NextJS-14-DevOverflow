@@ -3,6 +3,7 @@ import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHtml from "@/components/shared/ParseHtml";
 import RenderTag from "@/components/shared/RenderTag";
+import Votes from "@/components/shared/Votes";
 import { getQuestion } from "@/lib/actions/question.actions";
 import { getUserById } from "@/lib/actions/user.action";
 import { formatBigNumber, getTimestamp } from "@/lib/utils";
@@ -18,7 +19,6 @@ interface QuestionDetailsProps {
 }
 const QuestionDetails = async ({ params }: QuestionDetailsProps) => {
   const result = await getQuestion({ questionId: params.id });
-
   const { userId: clerkId } = auth();
 
   let mongoUser;
@@ -45,7 +45,16 @@ const QuestionDetails = async ({ params }: QuestionDetailsProps) => {
               {result.author.name}
             </p>
           </Link>
-          <div>VOTING</div>
+          <Votes
+            type="Question"
+            itemId={JSON.stringify(result._id)}
+            userId={JSON.stringify(mongoUser._id)}
+            upvotes={result.upvotes.length}
+            hasUpVoted={result.upvotes.includes(mongoUser._id)}
+            downvotes={result.downvotes.length}
+            hasDownVoted={result.downvotes.includes(mongoUser._id)}
+            hasSaved={mongoUser?.saved.includes(result._id)}
+          />
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {result.title}
