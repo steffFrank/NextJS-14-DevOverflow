@@ -1,5 +1,6 @@
 "use client";
 
+import { downVoteAnswer, upVoteAnswer } from "@/lib/actions/answer.actions";
 import {
   downVoteQuestion,
   upVoteQuestion,
@@ -44,6 +45,14 @@ const Votes = ({
           hasUpVoted,
           path,
         });
+      } else if (type === "Answer") {
+        await upVoteAnswer({
+          userId: JSON.parse(userId),
+          answerId: JSON.parse(itemId),
+          hasDownVoted,
+          hasUpVoted,
+          path,
+        });
       }
     }
     if (voteType === "downvote") {
@@ -55,9 +64,18 @@ const Votes = ({
           hasUpVoted,
           path,
         });
+      } else if (type === "Answer") {
+        await downVoteAnswer({
+          userId: JSON.parse(userId),
+          answerId: JSON.parse(itemId),
+          hasDownVoted,
+          hasUpVoted,
+          path,
+        });
       }
     }
   };
+
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
@@ -101,18 +119,20 @@ const Votes = ({
           </div>
         </div>
 
-        <Image
-          src={
-            hasSaved
-              ? "/assets/icons/star-filled.svg"
-              : "/assets/icons/star-red.svg"
-          }
-          width={18}
-          height={18}
-          alt="upvote"
-          className="cursor-pointer"
-          onClick={() => handleSave()}
-        />
+        {type === "Question" && (
+          <Image
+            src={
+              hasSaved
+                ? "/assets/icons/star-filled.svg"
+                : "/assets/icons/star-red.svg"
+            }
+            width={18}
+            height={18}
+            alt="upvote"
+            className="cursor-pointer"
+            onClick={() => handleSave()}
+          />
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHtml from "./ParseHtml";
 import Votes from "./Votes";
+import { getUserById } from "@/lib/actions/user.action";
 
 interface AllAnswersProps {
   questionId: string;
@@ -24,6 +25,11 @@ const AllAnswers = async ({
   filter,
 }: AllAnswersProps) => {
   const result = await getAllAnswers({ questionId });
+  let mongoUser: any;
+  if (userId) {
+    mongoUser = await getUserById({ userId });
+  }
+
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
@@ -59,7 +65,16 @@ const AllAnswers = async ({
                       </p>
                     </div>
                   </Link>
-                  {/* <Votes /> */}
+                  <Votes
+                    type="Answer"
+                    itemId={JSON.stringify(answer._id)}
+                    userId={userId}
+                    upvotes={answer.upvotes.length}
+                    hasUpVoted={answer.upvotes.includes(JSON.parse(userId))}
+                    downvotes={answer.downvotes.length}
+                    hasDownVoted={answer.downvotes.includes(JSON.parse(userId))}
+                    hasSaved={mongoUser?.saved.includes(answer._id)}
+                  />
                 </div>
               </div>
               <ParseHtml content={answer.content} />
